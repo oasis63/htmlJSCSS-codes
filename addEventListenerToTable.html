@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        table {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 2px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table id="elitable" border="1" cellspacing="0" width="100%">
+        <tr>
+            <td>100</td>
+            <td>AAA</td>
+            <td>aaa</td>
+        </tr>
+        <tr>
+            <td>200</td>
+            <td>BBB</td>
+            <td>bbb</td>
+        </tr>
+        <tr>
+            <td>300</td>
+            <td>CCC</td>
+            <td>ccc</td>
+        </tr>
+    </table>
+
+    <button id="btn">Button</button>
+
+    <br>
+    <hr><br>
+
+    <table id="table2">
+        <tbody class="tableHeadStyle">
+            <th></th>
+            <th>One</th>
+            <th>Two</th>
+            <th>Three</th>
+            <th>Four</th>
+            <th>Five</th>
+        </tbody>
+        <tbody class="tableBodyStyle">
+            <tr>
+                <th>Country</th>
+
+                <td>France</td>
+                <td>Spain</td>
+                <td>Lebanon</td>
+                <td>Argentina</td>
+                <td>USA</td>
+            </tr>
+
+            <tr class="sectionTr">
+                <th style="color: purple;"> Hearder1 </th>
+            </tr>
+
+            <tr>
+                <th id="dateTh">Date</th>
+
+                <td>2001-01-01</td>
+                <td>2005-05-05</td>
+                <td>2002-02-02</td>
+                <td>2005-04-04</td>
+                <td>2004-04-04</td>
+            </tr>
+
+            <tr>
+                <th id="sizeTh">Size</th>
+
+                <td>25</td>
+                <td>0</td>
+                <td>-17</td>
+                <td>100</td>
+                <td>-6</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <script>
+
+        function isArray(myArray) {
+            return myArray.constructor.toString().indexOf("Array") > -1;
+        }
+
+
+        let btnElem = document.getElementById('btn');
+        btnElem.addEventListener('click', (e1) => {
+            console.log(e1);
+        });
+        let tableElem = document.getElementById('table2');
+        //  tableElem.addEventListener('click',(e)=>{
+        //  	console.log(e);
+        //  	console.log(e.target);
+        //  	console.log(e.currentTarget);
+        //     var idx = e.currentTarget.index() + 1;
+        // 	console.log('delegated', idx);
+        //  });
+
+        let sizeTh = document.getElementById('sizeTh');
+        sizeTh.addEventListener('click', (e) => {
+            // let trParentNode = sizeTh.parentNode;
+            let trParentNode = e.target.parentNode;
+            console.log('trParentNode ', trParentNode)
+
+            let parentNodeOfTr = trParentNode.parentNode;
+            console.log('parentNodeOfTr ', parentNodeOfTr)
+
+            let children = parentNodeOfTr.children;
+            console.log('children  : ', children)
+            console.log('typeof children  : ', typeof children == 'ARRAY')
+            console.log('typeof children  : ', typeof children == 'ARRAY')
+
+            console.log('parentNodeOfTr id ', isArray(children))
+
+            // var child = document.getElementById('my_element');
+            // var parent = child.parentNode;
+            // The equivalent of parent.children.indexOf(child)
+            // var index = Array.prototype.indexOf.call(parent.children, child);
+            var index = Array.prototype.indexOf.call(children, trParentNode);
+
+            console.log('tr node index  : ' , index )
+
+            // let tBodyRows = tableElem.querySelectorAll('.tableBodyStyle tr:not(.sectionTr)');
+            let tBodyRows = tableElem.querySelectorAll('.tableBodyStyle tr');
+            // console.log('tBodyRows  : ', tBodyRows)
+
+            // console.log('tr index : ', tBodyRows.index(trParentNode))
+
+
+            console.log(e);
+            console.log(e.target);
+            console.log(e.currentTarget);
+            var idx = e.currentTarget.index() + 1;
+            console.log('delegated', idx);
+        });
+
+
+        let dateTh = document.getElementById('dateTh');
+        dateTh.addEventListener('click', (e) => {
+            // add null checks
+            let trParentNode = e.target.parentNode;
+            let parentNodeOfTr = trParentNode.parentNode;
+            let indexOfTr = Array.prototype.indexOf.call(parentNodeOfTr.children, trParentNode);
+            // use this indexOfTr  for  sorting the table 
+        });
+
+
+    </script>
+
+</body>
+
+</html>
