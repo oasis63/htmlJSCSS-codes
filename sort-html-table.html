@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Table Sort Algo </title>
+    <style>
+        table {
+            border-spacing: 0;
+            width: 80%;
+            border: 1px solid #dddd;
+        }
+
+        tr,
+        th,
+        td {
+            text-align: left;
+            padding: 15px;
+            border: 1px solid black;
+        }
+
+        button {
+            padding: 5px;
+            color: #3e3e3e;
+            background: rgba(230, 183, 183, 0.867);
+        }
+
+        /*tr:nth-child(even) {
+			background-color: #008000
+		} */
+
+        /* tr:nth-child(n+2){
+            background-color: red;
+        } */
+
+        .tableHeaderHorizontalStyle {
+            display: flex;
+        }
+
+        .tableHeaderHorizontalStyle>tr {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <table id="table1">
+            <tr>
+                <th>Country</th>
+                <th>Capital</th>
+                <th>Initial Index</th>
+                <th>Random Num</th>
+            </tr>
+            <tr>
+                <td>United states of America</td>
+                <td>Washington DC</td>
+                <td>1</td>
+                <td>71</td>
+            </tr>
+            <tr>
+                <td>India</td>
+                <td>New Delhi</td>
+                <td>2</td>
+                <td>32</td>
+            </tr>
+            <tr>
+                <td>Australia</td>
+                <td>Canberra</td>
+                <td>3</td>
+                <td>63</td>
+            </tr>
+            <tr>
+                <td>Germany</td>
+                <td>Berlin</td>
+                <td>4</td>
+                <td>44</td>
+            </tr>
+            <tr>
+                <td>China</td>
+                <td>Beijing</td>
+                <td>5</td>
+                <td>65</td>
+            </tr>
+            <tr>
+                <td>Nepal</td>
+                <td>Kathmandu</td>
+                <td>6</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>Myanmar </td>
+                <td>Nay Pyi Taw</td>
+                <td>7</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>Qatar </td>
+                <td>Doha</td>
+                <td>8</td>
+                <td>108</td>
+            </tr>
+
+        </table>
+
+        <p>
+            <button onclick="sortTable1()">Sort1</button>
+            <button onclick="sortTable2()">Sort2</button>
+        </p>
+
+        <table id="table2">
+            <tbody class="tableHeadStyle">
+                <th></th>
+                <th>One</th>
+                <th>Two</th>
+                <th>Three</th>
+                <th>Four</th>
+                <th>Five</th>
+            </tbody>
+            <tbody class="tableBodyStyle">
+                <tr>
+                    <th>Country</th>
+
+                    <td>France</td>
+                    <td>Spain</td>
+                    <td>Lebanon</td>
+                    <td>Argentina</td>
+                    <td>USA</td>
+                </tr>
+
+                <tr class="sectionTr">
+                    <td> Hearder1 </td>
+                </tr>
+
+                <tr>
+                    <th>Date</th>
+
+                    <td>2001-01-01</td>
+                    <td>2005-05-05</td>
+                    <td>2002-02-02</td>
+                    <td>2005-04-04</td>
+                    <td>2004-04-04</td>
+                </tr>
+
+                <tr>
+                    <th>Size</th>
+
+                    <td>25</td>
+                    <td>0</td>
+                    <td>-17</td>
+                    <td>100</td>
+                    <td>-6</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <hr>
+        <hr>
+        <!-- sort is working for this x-axis direction also  -->
+        <!-- <table id="table3" style="display: flex;">
+            <tbody class="tableHeadStyle tableHeaderHorizontalStyle">
+                <th></th>
+                <th>One</th>
+                <th>Two</th>
+                <th>Three</th>
+                <th>Four</th>
+                <th>Five</th>
+            </tbody>
+            <tbody class="tableBodyStyle tableHeaderHorizontalStyle">
+                <tr>
+                    <th>Country</th>
+
+                    <td>France</td>
+                    <td>Spain</td>
+                    <td>Lebanon</td>
+                    <td>Argentina</td>
+                    <td>USA</td>
+                </tr>
+
+                <tr class="sectionTr">
+                    <td> Hearder1 </td>
+                </tr>
+
+                <tr>
+                    <th>Date</th>
+
+                    <td>2001-01-01</td>
+                    <td>2005-05-05</td>
+                    <td>2002-02-02</td>
+                    <td>2005-04-04</td>
+                    <td>2004-04-04</td>
+                </tr>
+
+                <tr>
+                    <th>Size</th>
+
+                    <td>25</td>
+                    <td>0</td>
+                    <td>-17</td>
+                    <td>100</td>
+                    <td>-6</td>
+                </tr>
+
+            </tbody>
+        </table> -->
+
+    </center>
+
+
+    <script>
+
+        // table sort2 
+        // sort based on the
+        /* 
+        1) first sort the given rowIndex tds values .. 
+        and then   
+        2) based on the new indices of the tds ..
+        3) just put the tds values of other trs at the respective place
+        as in the given rowIndex tr 
+        */
+
+        let isAsc = true;
+
+        function sortTable2() {
+            let sortRowIndex = 0;
+
+            isAsc = !isAsc;
+
+            var i, x, y;
+            let table = document.getElementById("table2");
+
+            // thead rows 
+            let tHeadRows = table.querySelectorAll('.tableHeadStyle tr');
+            console.log('tHeadRows  : ', tHeadRows)
+
+            // tbody tBodyRows 
+            //  we don't have to include the sectionTr.. 
+            // let tBodyRows = table.querySelectorAll('.tableBodyStyle tr:not(.sectionTr)');
+            let tBodyRows = table.querySelectorAll('.tableBodyStyle tr');
+            console.log('tBodyRows  : ', tBodyRows)
+
+            console.log('tBodyRows length  : ', tBodyRows.length)
+
+            let sortRow = tBodyRows[sortRowIndex];
+            console.log('sortRow : ', sortRow);
+
+            let tds = sortRow.getElementsByTagName('td');
+            let tdsLen = tds.length;
+
+            // sort the tds values 
+            for (let j = 0; j < tdsLen - 1; j++) {
+                let min = j;
+                for (let k = j + 1; k < tdsLen; k++) {
+                    if ((tds[k] && tds[min]) && (tds[k].innerHTML.toLowerCase() < tds[min].innerHTML.toLowerCase())) {
+                        min = k;
+                    }
+                }
+                // swap the values
+                if (min != j) {
+                    let temp1 = tds[j].innerHTML;
+                    tds[j].innerHTML = tds[min].innerHTML;
+                    tds[min].innerHTML = temp1;
+
+                    // swap/sort td values in other tBodyRows 
+                    for (let z = 0; z < tBodyRows.length; z++) {
+                        if (z != sortRowIndex) {
+                            let tempTDs = tBodyRows[z].getElementsByTagName('td');
+
+                            if(tempTDs && tempTDs.length > 0 && tempTDs[j] && tempTDs[min]){
+                                let temp12 = tempTDs[j].innerHTML;
+                                tempTDs[j].innerHTML = tempTDs[min].innerHTML;
+                                tempTDs[min].innerHTML = temp12;
+                            }
+                        }
+                    }
+
+                    // swap/sort td/th values in other tHeadRows 
+                    for (let z = 0; z < tHeadRows.length; z++) {
+                        let tempTDs = tHeadRows[z].getElementsByTagName('th');
+
+                        if(tempTDs && tempTDs.length > 0 && tempTDs[j] && tempTDs[min]){
+                            let temp12 = tempTDs[j + 1].innerHTML;
+                            tempTDs[j + 1].innerHTML = tempTDs[min + 1].innerHTML;
+                            tempTDs[min + 1].innerHTML = temp12;
+                        }
+                    }
+                }
+            }
+
+        }
+
+
+
+        function sortTable1() {
+            var table, i, x, y;
+            table = document.getElementById("table1");
+            var switching = true;
+
+            // Run loop until no switching is needed
+            while (switching) {
+                switching = false;
+                var rows = table.rows;
+                console.log('rows  : ', rows)
+
+                // Loop to go through all rows
+                for (i = 1; i < (rows.length - 1); i++) {
+                    var Switch = false;
+
+                    // Fetch 2 elements that need to be compared
+                    x = rows[i].getElementsByTagName("TD")[3];
+                    y = rows[i + 1].getElementsByTagName("TD")[3];
+
+                    console.log(typeof x.innerHTML)
+                    console.log(typeof y.innerHTML)
+
+                    // Check if 2 rows need to be switched
+                    if (x.innerHTML > y.innerHTML) {
+
+                        // If yes, mark Switch as needed and break loop
+                        Switch = true;
+                        break;
+                    }
+                }
+                if (Switch) {
+                    // Function to switch rows and mark switch as completed
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+
+        // BACKUP CODE 
+        function sortTable3() {
+            let sortRowIndex = 1;
+
+            isAsc = !isAsc;
+
+            var table, i, x, y;
+            table = document.getElementById("table2");
+
+
+            var rows = table.rows;
+            console.log('rows  : ', rows)
+
+            console.log('rows length  : ', rows.length)
+
+            let sortRow = rows[sortRowIndex];
+            console.log('sortRow : ', sortRow);
+
+            let tds = sortRow.getElementsByTagName('td');
+            let tdsLen = tds.length;
+
+            // sort the tds values 
+            for (let j = 0; j < tdsLen - 1; j++) {
+                let min = j;
+                for (let k = j + 1; k < tdsLen; k++) {
+                    if (tds[k].innerHTML.toLowerCase() < tds[min].innerHTML.toLowerCase()) {
+                        min = k;
+                    }
+                }
+                // swap the values
+                if (min != j) {
+                    let temp1 = tds[j].innerHTML;
+                    tds[j].innerHTML = tds[min].innerHTML;
+                    tds[min].innerHTML = temp1;
+
+                    // swap/sort td values in other rows 
+                    for (let z = 0; z < rows.length; z++) {
+                        if (z != sortRowIndex) {
+                            let tempTDs = rows[z].getElementsByTagName('td');
+
+                            let temp12 = tempTDs[j].innerHTML;
+                            tempTDs[j].innerHTML = tempTDs[min].innerHTML;
+                            tempTDs[min].innerHTML = temp12;
+                        }
+                    }
+                }
+            }
+        }
+
+    </script>
+
+
+</body>
+
+</html>
